@@ -13,7 +13,7 @@ steps:
 - task: AzureResourceManagerTemplateDeployment@3
   inputs:
     deploymentScope: 'Resource Group'
-    azureResourceManagerConnection: 'General-Purpose-Resource-Manager'
+    azureResourceManagerConnection: 'arm-template-connection'
     subscriptionId: '140c982b-31da-401b-9652-d724a803076a'
     action: 'Create Or Update Resource Group'
     resourceGroupName: 'arm-templates'
