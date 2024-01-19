@@ -1,0 +1,22 @@
+$templateFile="arm-deploy.json"
+az deployment group create --name blanktemplate --resource-group "arm-tutorials-group" --template-file $templateFile
+az deployment group create --name addstorage --resource-group "arm-tutorials-group" --template-file $templateFile
+armdeploystorage
+az deployment group create --name addnameparameter --resource-group "arm-tutorials-group" --template-file $templateFile --parameters storageName=armdeploystorage
+az deployment group create --name addskuparameter --resource-group "arm-tutorials-group" --template-file $templateFile --parameters storageName=armdeploystorage
+az deployment group create --name usenondefaultsku --resource-group "arm-tutorials-group" --template-file $templateFile --parameters storageSKU=Standard_GRS storageName=armdeploystorage
+az deployment group create --name addlocationparameter --resource-group "arm-tutorials-group" --template-file $templateFile --parameters storageName=newarmdeploystorage
+az deployment group create --name addnamevariable --resource-group "arm-tutorials-group" --template-file $templateFile --parameters '{"storagePrefix": {"value":"store"}}' '{"storageSKU": {"value":"Standard_LRS"}}'
+az deployment group create --name addoutputs --resource-group "arm-tutorials-group" --template-file $templateFile --parameters storagePrefix=store storageSKU=Standard_LRS
+az deployment group create --name addappserviceplan --resource-group "arm-tutorials-group" --template-file $templateFile --parameters storagePrefix=store storageSKU=Standard_LRS
+az deployment group create --name addwebapp --resource-group "arm-tutorials-group" --template-file $templateFile --parameters storagePrefix=store storageSKU=Standard_LRS webAppName=demoapp
+az deployment group create --name addtags --resource-group "arm-tutorials-group" --template-file $templateFile --parameters storagePrefix=store storageSKU=Standard_LRS webAppName=demoapp
+
+
+$devParameterFile="arm-deploy.parameters.dev.json"
+az group create --name "arm-tutorials-group-dev" --location 'East US'
+az deployment group create --name devenvironment --resource-group "arm-tutorials-group-dev" --template-file $templateFile --parameters $devParameterFile
+
+$prodParameterFile="arm-deploy.parameters.prod.json"
+az group create --name "arm-tutorials-group-prod" --location "West US"
+az deployment group create --name prodenvironment --resource-group "arm-tutorials-group-prod" --template-file $templateFile --parameters $prodParameterFile
